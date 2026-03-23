@@ -14,18 +14,5 @@ echo "==========================================="
 # kind create cluster --name "$CLUSTER_NAME"
 kind create cluster --name "$CLUSTER_NAME" --image kindest/node:v1.29.2 --wait 5m
 
-# Función para esperar a que el cluster esté listo
-wait_for_cluster() {
-  echo "⏳ Esperando a que el API server esté listo..."
-  until kubectl version --short >/dev/null 2>&1; do
-    sleep 2
-  done
-
-  echo "⏳ Esperando a que los nodos estén Ready..."
-  kubectl wait --for=condition=Ready nodes --all --timeout=60s
-}
-
-wait_for_cluster
-
 echo "✅ Cluster Kind '$CLUSTER_NAME' creado y listo."
 echo "Puedes verificar con: kubectl cluster-info --context kind-$CLUSTER_NAME"
