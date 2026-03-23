@@ -11,7 +11,8 @@ echo "🚀 Creando cluster Kind: $CLUSTER_NAME"
 echo "==========================================="
 
 # Crear cluster
-kind create cluster --name "$CLUSTER_NAME"
+# kind create cluster --name "$CLUSTER_NAME"
+kind create cluster --name "$CLUSTER_NAME" --image kindest/node:v1.29.2 --wait 5m
 
 # Función para esperar a que el cluster esté listo
 wait_for_cluster() {
