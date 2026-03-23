@@ -26,7 +26,7 @@ pipeline {
                 sh '''
                     # 1. Crear namespace e instalar
                     kubectl create namespace argocd --context kind-argocd || true
-                    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml --context kind-argocd
+                    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml --context kind-argocd || true
                     
                     # 2. Esperar a que el servidor esté listo (importante antes de pedir la pass)
                     echo "Esperando a que ArgoCD Server esté disponible..."
