@@ -12,6 +12,14 @@ pipeline {
                 '''
             }
         }
+        stage('Execute Create cluster Kind') {
+            steps {
+                sh '''
+                    chmod +x ./argoCD/create-kind.sh
+                    ./argoCD/create-kind.sh
+                '''
+            }
+        }
     }
     
     post {
