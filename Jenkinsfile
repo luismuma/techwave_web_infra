@@ -7,8 +7,8 @@ pipeline {
                 // El script ya está aquí gracias al checkout automático de Jenkins
                 sh '''
                     pwd
-                    chmod +x ./delete-kind.sh
-                    ./delete-kind.sh
+                    chmod +x ./argoCD/delete-kind.sh
+                    ./argoCD/delete-kind.sh
                 '''
             }
         }
