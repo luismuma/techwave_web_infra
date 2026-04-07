@@ -31,16 +31,7 @@ pipeline {
             NAMESPACE="argocd"
             NODE_PORT=30888
 
-            echo "==========================================="
-            echo "🧹 Limpiando instalación previa de ArgoCD..."
-            echo "==========================================="
-            kubectl delete namespace $NAMESPACE --context $CONTEXT || true
-
-            echo "==========================================="
-            echo "📦 Creando namespace..."
-            echo "==========================================="
-            kubectl create namespace $NAMESPACE --context $CONTEXT
-
+            
             echo "==========================================="
             echo "🚀 Instalando ArgoCD (No incluye CRDs)..."
             echo "==========================================="
