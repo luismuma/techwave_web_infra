@@ -9,7 +9,7 @@ pipeline {
                     pwd
                     chmod +x ./argoCD/delete-kind.sh
                     ./argoCD/delete-kind.sh
-                    kubectl delete crd applications.argoproj.io applicationsets.argoproj.io appprojects.argoproj.io --context kind-argocd || true
+                    kubectl delete crd applications.argoproj.io applicationsets.argoproj.io appprojects.argoproj.io --context argocd || true
                 '''
             }
         }
