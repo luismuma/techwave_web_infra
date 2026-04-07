@@ -44,12 +44,8 @@ pipeline {
             echo "==========================================="
             echo "🚀 Instalando ArgoCD (No incluye CRDs)..."
             echo "==========================================="
-            #kubectl apply -n $NAMESPACE -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml --context $CONTEXT
-            kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml \
-              --context kind-argocd \
-              --prune \
-              --selector='!kind=CustomResourceDefinition'
-
+            kubectl apply -n $NAMESPACE -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/namespace-install.yaml
+            
             echo "==========================================="
             echo "⏳ Esperando a que ArgoCD Server esté listo..."
             echo "==========================================="
