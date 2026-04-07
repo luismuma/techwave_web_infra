@@ -32,7 +32,7 @@ kubectl cluster-info --context kind-$CLUSTER_NAME
 # ------------------------------------------
 # Instalar CRDs de ArgoCD
 # ------------------------------------------
-echo "📦 Instalando CRDs de ArgoCD..."
-kubectl create namespace "$NAMESPACE" --context kind-$CLUSTER_NAME || true
-kubectl create -k https://github.com/argoproj/argo-cd/manifests/crds?ref=stable || true
+#echo "📦 Instalando CRDs de ArgoCD..."
+#kubectl create namespace "$NAMESPACE" --context kind-$CLUSTER_NAME || true
+#kubectl create -k https://github.com/argoproj/argo-cd/manifests/crds?ref=stable || true
 
