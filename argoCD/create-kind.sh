@@ -18,7 +18,7 @@ apiVersion: kind.x-k8s.io/v1alpha4
 nodes:
 - role: control-plane
   extraPortMappings:
-  - containerPort: 30888
+  - containerPort: 32251
     hostPort: 30888
     protocol: TCP
 EOF
