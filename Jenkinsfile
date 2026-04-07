@@ -29,44 +29,47 @@ pipeline {
 
             CONTEXT="kind-argocd"
             NAMESPACE="argocd"
+            NODE_PORT=30888
 
-            # 1️⃣ Crear namespace
-            kubectl create namespace $NAMESPACE --context $CONTEXT || true
+            echo "==========================================="
+            echo "🧹 Limpiando instalación previa de ArgoCD..."
+            echo "==========================================="
+            kubectl delete namespace $NAMESPACE --context $CONTEXT || true
+            kubectl delete crd applications.argoproj.io applicationsets.argoproj.io appprojects.argoproj.io --context $CONTEXT || true
 
-            # 2️⃣ Instalar CRDs
-            echo "Instalando CRDs de ArgoCD..."
-            kubectl create -k https://github.com/argoproj/argo-cd/manifests/crds?ref=stable --context $CONTEXT || true
+            echo "==========================================="
+            echo "📦 Creando namespace y aplicando CRDs..."
+            echo "==========================================="
+            kubectl create namespace $NAMESPACE --context $CONTEXT
+            kubectl apply -k https://github.com/argoproj/argo-cd/manifests/crds?ref=stable --context $CONTEXT
 
-            # 3️⃣ Instalar ArgoCD
-            echo "Instalando ArgoCD..."
+            echo "==========================================="
+            echo "🚀 Instalando ArgoCD..."
+            echo "==========================================="
             kubectl apply -n $NAMESPACE -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml --context $CONTEXT
 
-            # 4️⃣ Reiniciar ApplicationSet Controller para evitar errores de sincronización
-            kubectl rollout restart deployment argocd-applicationset-controller -n $NAMESPACE --context $CONTEXT || true
-
-            # 5️⃣ Esperar a que el server esté listo
-            echo "Esperando a que ArgoCD Server esté disponible..."
+            echo "==========================================="
+            echo "⏳ Esperando a que ArgoCD Server esté listo..."
+            echo "==========================================="
             kubectl wait --for=condition=available --timeout=300s deployment/argocd-server -n $NAMESPACE --context $CONTEXT
 
-            # 6️⃣ Obtener contraseña admin
-            echo -n "Contraseña inicial de ArgoCD: "
-            kubectl -n $NAMESPACE get secret argocd-initial-admin-secret --context $CONTEXT -o jsonpath="{.data.password}" | base64 -d
-            echo
+            echo "==========================================="
+            echo "🔑 Obteniendo contraseña inicial de admin..."
+            echo "==========================================="
+            ADMIN_PASS=$(kubectl -n $NAMESPACE get secret argocd-initial-admin-secret --context $CONTEXT -o jsonpath="{.data.password}" | base64 -d)
+            echo "Contraseña inicial de ArgoCD: $ADMIN_PASS"
 
-            # 7️⃣ Cambiar Service a NodePort (para HTTP)
-            echo "Exponiendo ArgoCD Server vía NodePort..."
+            echo "==========================================="
+            echo "🌐 Configurando NodePort para acceso HTTP..."
+            echo "==========================================="
             kubectl patch svc argocd-server -n $NAMESPACE --context $CONTEXT \
-              -p '{"spec":{"type":"NodePort","ports":[{"port":80,"targetPort":8080,"protocol":"TCP"}]}}'
+              -p "{\"spec\":{\"type\":\"NodePort\",\"ports\":[{\"port\":80,\"targetPort\":8080,\"nodePort\":$NODE_PORT,\"protocol\":\"TCP\"}]}}"
 
-            # 8️⃣ Obtener NodePort asignado
-            NODE_PORT=$(kubectl get svc argocd-server -n $NAMESPACE --context $CONTEXT -o jsonpath='{.spec.ports[0].nodePort}')
             echo "ArgoCD HTTP accesible en: http://localhost:$NODE_PORT"
-
-            # 🔧 Opcional: esperar unos segundos para asegurar que el service está listo
-            sleep 10
         '''
     }
 }
+   
 /* 
         stage('Install & Access ArgoCD') {
             steps {
