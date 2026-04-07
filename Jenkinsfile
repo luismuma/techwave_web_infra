@@ -22,7 +22,7 @@ pipeline {
             }
         }
 
-        stage('Install & Access ArgoCD on Kind') {
+stage('Install & Access ArgoCD on Kind') {
     steps {
         sh '''
             set -e
@@ -61,6 +61,18 @@ pipeline {
             echo "==========================================="
             echo "✅ ArgoCD listo para usar en Kind"
             echo "==========================================="
+        '''
+    }
+}
+stage('Port-forward ArgoCD') {
+    steps {
+        sh '''
+            CONTEXT="kind-argocd"
+            NAMESPACE="argocd"
+
+            echo "🌐 Lanzando port-forward de ArgoCD..."
+            kubectl port-forward svc/argocd-server -n $NAMESPACE 8080:443 --context $CONTEXT &
+            echo "Port-forward activo en https://localhost:8080 (Ctrl+C para detener)"
         '''
     }
 }
