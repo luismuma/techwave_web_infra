@@ -22,7 +22,8 @@ pipeline {
                 '''
             }
         }
-        stage('Install & Access ArgoCD') {
+
+        stage('Install & Access ArgoCD on Kind') {
     steps {
         sh '''
             set -e
@@ -35,16 +36,14 @@ pipeline {
             echo "🧹 Limpiando instalación previa de ArgoCD..."
             echo "==========================================="
             kubectl delete namespace $NAMESPACE --context $CONTEXT || true
-            kubectl delete crd applications.argoproj.io applicationsets.argoproj.io appprojects.argoproj.io --context $CONTEXT || true
 
             echo "==========================================="
-            echo "📦 Creando namespace y aplicando CRDs..."
+            echo "📦 Creando namespace..."
             echo "==========================================="
             kubectl create namespace $NAMESPACE --context $CONTEXT
-            kubectl apply -k https://github.com/argoproj/argo-cd/manifests/crds?ref=stable --context $CONTEXT
 
             echo "==========================================="
-            echo "🚀 Instalando ArgoCD..."
+            echo "🚀 Instalando ArgoCD (incluye CRDs)..."
             echo "==========================================="
             kubectl apply -n $NAMESPACE -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml --context $CONTEXT
 
@@ -66,6 +65,13 @@ pipeline {
               -p "{\"spec\":{\"type\":\"NodePort\",\"ports\":[{\"port\":80,\"targetPort\":8080,\"nodePort\":$NODE_PORT,\"protocol\":\"TCP\"}]}}"
 
             echo "ArgoCD HTTP accesible en: http://localhost:$NODE_PORT"
+
+            # 🔧 Opcional: esperar un poco para asegurar que NodePort esté activo
+            sleep 10
+
+            echo "==========================================="
+            echo "✅ ArgoCD listo para usar en Kind"
+            echo "==========================================="
         '''
     }
 }
