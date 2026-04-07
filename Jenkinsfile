@@ -60,12 +60,10 @@ pipeline {
             echo "==========================================="
             echo "🌐 Configurando NodePort para acceso HTTP..."
             echo "==========================================="
-            # Forma usando variables definidas en el pipeline
             kubectl patch svc argocd-server -n "$NAMESPACE" --context "$CONTEXT" \
-              -p "{\"spec\":{\"type\":\"NodePort\",\"ports\":[{\"port\":80,\"targetPort\":8080,\"nodePort\":$NODE_PORT,\"protocol\":\"TCP\"}]}}"
+              -p "{\\"spec\\":{\\"type\\":\\"NodePort\\",\\"ports\\":[{\\"port\\":80,\\"targetPort\\":8080,\\"nodePort\\":$NODE_PORT,\\"protocol\\":\\"TCP\\"}]}}"
 
             echo "ArgoCD HTTP accesible en: http://localhost:$NODE_PORT"
-
             # 🔧 Opcional: esperar un poco para asegurar que NodePort esté activo
             sleep 10
 
