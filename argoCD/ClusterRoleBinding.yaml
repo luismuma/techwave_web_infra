@@ -1,3 +1,4 @@
+# argocd-application-controller-binding.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
@@ -5,7 +6,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: argocd-application-controller-rbac
+  name: argocd-application-controller-rbac  # Apunta al ClusterRole 
 subjects:
 - kind: ServiceAccount
   name: argocd-application-controller
