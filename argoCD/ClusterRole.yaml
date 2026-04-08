@@ -3,19 +3,23 @@ kind: ClusterRole
 metadata:
   name: argocd-application-controller-rbac
 rules:
-# 1. Tu regla original (RoleBindings)
+# 1. Tu regla original (RoleBindings) ✅
 - apiGroups: ["rbac.authorization.k8s.io"]
   resources: ["rolebindings"]
   verbs: ["get", "list", "watch"]
-# 2. StatefulSets (error anterior)
+# 2. StatefulSets (error anterior) ✅
 - apiGroups: ["apps"]
   resources: ["statefulsets", "deployments", "daemonsets", "replicasets"]
   verbs: ["get", "list", "watch"]
-# 3. ApplicationSets (error NUEVO)
+# 3. ApplicationSets (error anterior) ✅
 - apiGroups: ["argoproj.io"]
   resources: ["applications", "applicationsets", "appprojects"]
   verbs: ["get", "list", "watch"]
-# 4. Core resources (ReplicationControllers - error NUEVO)
+# 4. Core resources (ReplicationControllers - error anterior) ✅
 - apiGroups: [""]
   resources: ["replicationcontrollers", "services", "configmaps", "secrets", "pods"]
+  verbs: ["get", "list", "watch"]
+# 5. CSI Storage (error ACTUAL - csistoragecapacities) ⭐ NUEVO
+- apiGroups: ["storage.k8s.io"]
+  resources: ["csistoragecapacities", "storageclasses"]
   verbs: ["get", "list", "watch"]
