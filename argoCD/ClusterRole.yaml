@@ -1,21 +1,21 @@
-# argocd-application-controller-full.yaml
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: argocd-application-controller-rbac
 rules:
-# Permiso para RoleBindings (tu regla original)
+# 1. Tu regla original (RoleBindings)
 - apiGroups: ["rbac.authorization.k8s.io"]
   resources: ["rolebindings"]
   verbs: ["get", "list", "watch"]
-# Permiso para StatefulSets (error actual)
+# 2. StatefulSets (error anterior)
 - apiGroups: ["apps"]
-  resources: ["statefulsets"]
+  resources: ["statefulsets", "deployments", "daemonsets", "replicasets"]
   verbs: ["get", "list", "watch"]
-# Otros recursos comunes que ArgoCD necesita
-- apiGroups: ["apps"]
-  resources: ["deployments", "daemonsets", "replicasets"]
+# 3. ApplicationSets (error NUEVO)
+- apiGroups: ["argoproj.io"]
+  resources: ["applications", "applicationsets", "appprojects"]
   verbs: ["get", "list", "watch"]
+# 4. Core resources (ReplicationControllers - error NUEVO)
 - apiGroups: [""]
-  resources: ["services", "configmaps", "secrets"]
+  resources: ["replicationcontrollers", "services", "configmaps", "secrets", "pods"]
   verbs: ["get", "list", "watch"]
