@@ -5,20 +5,24 @@ metadata:
   namespace: argocd
 spec:
   project: default
+
   source:
     repoURL: https://github.com/luismuma/techwave_web_K8s.git
-    targetRevision: main
-    path: helm/flask-app   # ✅ IMPORTANTE
+    targetRevision: main   # ✅ FIX: evita HEAD
+    path: helm/flask-app   # ✅ FIX: solo el chart
     helm:
       valueFiles:
-        - values-green.yaml   # ✅ para tu pipeline
+        - values-green.yaml
+
   destination:
     server: https://kubernetes.default.svc
     namespace: flask-app
+
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+
     syncOptions:
       - CreateNamespace=true
-      
+      - ApplyOutOfSyncOnly=true
