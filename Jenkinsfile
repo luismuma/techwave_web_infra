@@ -84,6 +84,7 @@ stage('Create ArgoCD Application') {
             echo "📦 Creando ArgoCD Application..."
             kubectl apply -f argoCD/argo-application.yaml --context kind-argocd
             echo "✅ Application creada"
+            kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
         '''
     }
 }
