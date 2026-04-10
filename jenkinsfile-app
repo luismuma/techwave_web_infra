@@ -1,11 +1,11 @@
 pipeline {
     agent any
-      stages{
+    stages {
         stage('Execute deploy flask-app') {
             steps {
                 sh '''
-                    CLUSTER_NAME="${1:-argocd}"   # Permite pasar nombre de cluster como argumento
-                    HELM_PATH="$HOME/proyecto_tokio/techwave_web_K8s/helm/flask-app"
+                    PATH_APP_ARGO="argoCD/argo-application.yaml"
+                    HELM_PATH="helm/flask-app"
                     NAMESPACE="${2:-flask-app}"    # Namespace opcional
                     echo "📦 Desplegando app Flask con Helm..."
                     kubectl create namespace "$NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
@@ -13,16 +13,31 @@ pipeline {
                     echo "✅ App Flask desplegada correctamente"
 
                     sleep 25
+                    kubectl apply -f "$PATH_APP_ARGO"
+                    sleep 10
                 '''
             }
         }
-      }
+
+        stage('Register Application in Argo CD') {
+    steps {
+        sh '''
+            PATH_APP_ARGO="argoCD/argo-application.yaml"
+
+            echo "🚀 Aplicando Application de Argo CD con kubectl..."
+            kubectl apply -f "$PATH_APP_ARGO" -n argocd
+
+            echo "✅ Application registrada en Argo CD. Puedes verificar en la UI: http://localhost:8080"
+        '''
+    }
+}
+    }
     post {
         success {
-            echo "Deploy flask-app correctamente."
+            echo "🎉 Pipeline completado correctamente."
         }
         cleanup {
-            cleanWs() // Buena práctica: dejar el workspace limpio
+            cleanWs()
         }
     }
 }
