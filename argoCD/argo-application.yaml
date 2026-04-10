@@ -13,6 +13,7 @@ spec:
     helm:
       valueFiles:
         - values-green.yaml
+      releaseName: flask-app
 
   destination:
     server: https://kubernetes.default.svc
