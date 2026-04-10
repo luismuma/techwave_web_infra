@@ -8,8 +8,8 @@ spec:
 
   source:
     repoURL: https://github.com/luismuma/techwave_web_K8s.git
-    targetRevision: main   # ✅ FIX: evita HEAD
-    path: helm/flask-app   # ✅ FIX: solo el chart
+    targetRevision: main
+    path: helm/flask-app
     helm:
       valueFiles:
         - values-green.yaml
@@ -25,4 +25,4 @@ spec:
 
     syncOptions:
       - CreateNamespace=true
-      - ApplyOutOfSyncOnly=true
+      - PruneLast=true
