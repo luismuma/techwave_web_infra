@@ -4,7 +4,6 @@ pipeline {
     stages {
         stage('Execute Delete Script') {
             steps {
-                // El script ya está aquí gracias al checkout automático de Jenkins
                 sh '''
                     pwd
                     chmod +x ./argoCD/delete-kind.sh
