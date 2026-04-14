@@ -6,8 +6,7 @@ pipeline {
             steps {
                 sh '''
                     pwd
-                    chmod +x ./argoCD/delete-kind.sh
-                    ./argoCD/delete-kind.sh
+                    kubectl apply -f argoCD/argo-application.yaml
                 '''
             }
         }
