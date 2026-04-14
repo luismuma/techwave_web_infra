@@ -63,6 +63,7 @@ stage('Install & Access ArgoCD on Kind') {
         '''
     }
 }
+/*
 stage('Port-forward ArgoCD') {
     steps {
         sh '''
@@ -75,6 +76,7 @@ stage('Port-forward ArgoCD') {
         '''
     }
 }
+  */
     }
     
     post {
