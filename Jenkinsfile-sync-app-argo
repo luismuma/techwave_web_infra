@@ -7,11 +7,23 @@ pipeline {
                 sh '''
                     pwd
                     kubectl apply -f argoCD/argo-application.yaml
+
+
+                '''
+            }
+        }
+        stage('synchronization settings') {
+            steps {
+                sh '''
+                    pwd
+                    kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+                    kubectl rollout restart statefulset argocd-application-controller -n argocd
+                    kubectl auth can-i list appprojects.argoproj.io \
+                      --as system:serviceaccount:argocd:argocd-application-controller
                 '''
             }
         }
     }
-    
     post {
         success {
             echo "Sincronizacion app - argocd realizada correctamente."
