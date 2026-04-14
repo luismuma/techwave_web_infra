@@ -1,1 +1,24 @@
+pipeline {
+    agent any
 
+    stages {
+        stage('Execute sync app-argocd') {
+            steps {
+                sh '''
+                    pwd
+                    chmod +x ./argoCD/delete-kind.sh
+                    ./argoCD/delete-kind.sh
+                '''
+            }
+        }
+    }
+    
+    post {
+        success {
+            echo "Sincronizacion app - argocd realizada correctamente."
+        }
+        cleanup {
+            cleanWs() // Buena práctica: dejar el workspace limpio
+        }
+    }
+}
