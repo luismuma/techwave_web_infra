@@ -12,16 +12,6 @@ pipeline {
                 '''
             }
         }
-        stage('synchronization settings') {
-            steps {
-                sh '''
-                    pwd
-                   
-                    kubectl auth can-i list appprojects.argoproj.io \
-                      --as system:serviceaccount:argocd:argocd-application-controller
-                '''
-            }
-        }
     }
     post {
         success {
