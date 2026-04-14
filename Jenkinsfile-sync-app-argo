@@ -16,7 +16,7 @@ pipeline {
             steps {
                 sh '''
                     pwd
-                    kubectl apply --server-side -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+                    kubectl replace -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
                     kubectl rollout restart statefulset argocd-application-controller -n argocd
                     kubectl auth can-i list appprojects.argoproj.io \
                       --as system:serviceaccount:argocd:argocd-application-controller
