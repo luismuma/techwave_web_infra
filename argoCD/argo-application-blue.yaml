@@ -5,25 +5,21 @@ metadata:
   namespace: argocd
 spec:
   project: default
-
   source:
     repoURL: https://github.com/luismuma/techwave_web_K8s.git
-    targetRevision: main
+    targetRevision: eff700ed
     path: helm/flask-app
     helm:
       valueFiles:
         - values.yaml
       releaseName: flask-app
-
   destination:
     server: https://kubernetes.default.svc
     namespace: flask-app
-
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
-
     syncOptions:
       - CreateNamespace=true
       - PruneLast=true
