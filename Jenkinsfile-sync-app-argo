@@ -2,11 +2,19 @@ pipeline {
     agent any
 
     stages {
-        stage('Execute sync app-argocd') {
+        stage('Execute sync app-argocd-green') {
             steps {
                 sh '''
                     pwd
-                    kubectl apply -f argoCD/argo-application.yaml
+                    kubectl apply -f argoCD/argo-application-green.yaml
+                '''
+            }
+        }
+        stage('Execute sync app-argocd-blue') {
+            steps {
+                sh '''
+                    pwd
+                    kubectl apply -f argoCD/argo-application-blue.yaml
                 '''
             }
         }
