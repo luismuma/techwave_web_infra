@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/luismuma/techwave_web_K8s.git
-    targetRevision: 2db179dc
+    targetRevision: 071109ae
     path: helm/flask-app
     helm:
       valueFiles:
