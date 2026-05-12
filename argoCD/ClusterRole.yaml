@@ -19,7 +19,8 @@ rules:
 - apiGroups: [""]
   resources: ["replicationcontrollers", "services", "configmaps", "secrets", "pods"]
   verbs: ["get", "list", "watch"]
-# 5. CSI Storage (error ACTUAL - csistoragecapacities) ⭐ NUEVO
+# 5. CSI Storage (error ACTUAL - csistoragecapacities)
 - apiGroups: ["storage.k8s.io"]
-  resources: ["csistoragecapacities", "storageclasses"]
+  resources: ["csistoragecapacities", "storageclasses", "csinodes"]
   verbs: ["get", "list", "watch"]
+
