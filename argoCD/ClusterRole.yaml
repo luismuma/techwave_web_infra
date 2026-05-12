@@ -4,46 +4,6 @@ metadata:
   name: argocd-application-controller-rbac
 
 rules:
-
-# 1. RBAC
-- apiGroups: ["rbac.authorization.k8s.io"]
-  resources: ["rolebindings"]
+- apiGroups: ["*"]
+  resources: ["*"]
   verbs: ["get", "list", "watch"]
-
-# 2. Apps
-- apiGroups: ["apps"]
-  resources: ["statefulsets", "deployments", "daemonsets", "replicasets"]
-  verbs: ["get", "list", "watch"]
-
-# 3. ArgoCD CRDs
-- apiGroups: ["argoproj.io"]
-  resources: ["applications", "applicationsets", "appprojects"]
-  verbs: ["get", "list", "watch"]
-
-# 4. Core resources
-- apiGroups: [""]
-  resources:
-    [
-      "replicationcontrollers",
-      "services",
-      "configmaps",
-      "secrets",
-      "pods"
-    ]
-  verbs: ["get", "list", "watch"]
-
-# 5. Storage / CSI
-- apiGroups: ["storage.k8s.io"]
-  resources:
-    [
-      "csistoragecapacities",
-      "storageclasses",
-      "csinodes"
-    ]
-  verbs: ["get", "list", "watch"]
-
-# 6. Networking / Ingress ⭐
-- apiGroups: ["networking.k8s.io"]
-  resources: ["ingresses"]
-  verbs: ["get", "list", "watch"]
-
